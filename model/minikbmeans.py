@@ -8,11 +8,14 @@ import datetime                    #Importamos datetime para manejar fechas
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import MiniBatchKMeans
 
-def MINIBKMEANS(Self):
+class Minikbmeans:
     
     results = pd.DataFrame()
+
+    def __init__(self):
+        return
     
-    def predict(data_customersnotnull):
+    def predict(self, data_customersnotnull):
         #Total de compra
         data_customersnotnull['TotalPrice'] = data_customersnotnull['UnitPrice']*data_customersnotnull['Quantity']
 
@@ -50,12 +53,12 @@ def MINIBKMEANS(Self):
         
 
         snsplot = sns.set_style("darkgrid")
-        snsplot = sns.relplot(data=result2, x="Recency", y="Monetary", hue="cluster_no")        
+        snsplot = sns.relplot(data=result, x="Recency", y="Monetary", hue="cluster_no")        
         name="static/images/MINIBKMEANS.png"
         snsplot.savefig(name)
         
         #cluster average values
-        self.results = result2.groupby('cluster_no').mean()
+        self.results = result.groupby('cluster_no').mean()
 
         return name
 

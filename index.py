@@ -1,6 +1,6 @@
 from flask import Flask, render_template, abort, request
 from flask.wrappers import Request
-from model import SARIMAX,SES,HWES,KMEANS,MINIBKMEANS, report, data
+from model import SARIMAX_predict,ses,hwes,kmeans,minikbmeans, report, data
 import numpy as np
 import pandas as pd
 
@@ -87,33 +87,74 @@ def productos_top_paises():
 
 @app.route('/Prediction_SARIMAX')
 def SARIMAX():
-    #plot = SARIMAX.predict(dataa.dataMonths)
-    #r = SARIMAX.results
-    #context = {
-     #   'Model' : plot,
-      #  'column_names' : r.columns.values,
-       # 'row_data': list(r.values.tolist()),
-        #'link_column' : "Month",
-        #'zip' : zip,
-    #}
-    #return render_template('SARIMAX.html',**context)
-    return render_template('SARIMAX.html')
+    sarimax1 = SARIMAX_predict.SARIMAX_predict()
+    plot = sarimax1.predict(dataa.dataMonths)
+    r = sarimax1.results
+    context = {
+        'Model' : plot,
+        'column_names' : r.columns.values,
+        'row_data': list(r.values.tolist()),
+        'link_column' : "Month",
+        'zip' : zip,
+    }
+    return render_template('SARIMAX.html', **context)
+
     
 @app.route('/Prediction_SES')
-def SES():
-    return render_template('SES.html')
+def ses_route():
+    ses1 = ses.Ses()
+    plot = ses1.predict(dataa.dataMonths)
+    r = ses1.results
+    context = {
+        'Model' : plot,
+        'column_names' : r.columns.values,
+        'row_data': list(r.values.tolist()),
+        'link_column' : "Month",
+        'zip' : zip,
+    }
+    return render_template('SES.html', **context)
 
 @app.route('/Prediction_HWES')
-def HWES():
-    return render_template('HWES.html')
+def HWES_rout():
+    HWES1 = hwes.Hwes()
+    plot = HWES1.predict(dataa.dataMonths)
+    r = HWES1.results
+    context = {
+        'Model' : plot,
+        'column_names' : r.columns.values,
+        'row_data': list(r.values.tolist()),
+        'link_column' : "Month",
+        'zip' : zip,
+    }
+    return render_template('HWES.html', **context)
 
 @app.route('/Clustering_KMEANS')
-def KMEANS():
-    return render_template('KMEANS.html')
+def KMEANS_rout():
+    KMEANS1 = kmeans.Kmeans()
+    plot = KMEANS1.predict(dataa.dataMonths)
+    r = KMEANS1.results
+    context = {
+        'Model' : plot,
+        'column_names' : r.columns.values,
+        'row_data': list(r.values.tolist()),
+        'link_column' : "Month",
+        'zip' : zip,
+    }
+    return render_template('KMEANS.html', **context)
 
-@app.route('/Clusterin_MINIBKMEANS')
-def HWES():
-    return render_template('MINIBKMEANS.html')
+@app.route('/Clustering_MINIBKMEANS')
+def MINIBKMEANS():
+    MINIBKMEANS1 = minikbmeans.Minikbmeans()
+    plot = MINIBKMEANS1.predict(dataa.dataMonths)
+    r = MINIBKMEANS1.results
+    context = {
+        'Model' : plot,
+        'column_names' : r.columns.values,
+        'row_data': list(r.values.tolist()),
+        'link_column' : "Month",
+        'zip' : zip,
+    }
+    return render_template('MINIBKMEANS.html', **context)
 
 if __name__ == "__main__":
     app.run(debug=True)

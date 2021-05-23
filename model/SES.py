@@ -7,11 +7,14 @@ from statsmodels.tsa.api import SimpleExpSmoothing
 #Métricas
 from math import sqrt #Permite usar la función de raíz
 
-def SES(self):
+class Ses:
 
     results = pd.DataFrame()
 
-    def predict(dataMonths):
+    def __init__(self):
+        return
+
+    def predict(self, dataMonths):
         # Separar los datos por año
         df_2010 = dataMonths[dataMonths.Year.isin([2010])]
         df_2011 = dataMonths[dataMonths.Year.isin([2011])]
@@ -36,18 +39,20 @@ def SES(self):
         ventas['Month'] = pd.to_datetime(ventas["Month"])
         ventas.set_index(['Month'],inplace=True)
         ventas.index = pd.DatetimeIndex(ventas.index).to_period('M')
-        ventas.columns = ['Sales']
+        ventas = ventas.rename({'Quantity': 'Sales'}, axis="columns")
 
          # Split data into train / test sets
         train = ventas.iloc[:len(ventas)-12] 
         test = ventas.iloc[len(ventas)-12:] # set one year(12 months) for testing
-        año2011 = test.to_frame().copy()
+        año2011 = test.copy()
 
-        model = SimpleExpSmoothing(test).fit(smoothing_level=1.6,optimized=False)
+        model = SimpleExpSmoothing(test['Sales']).fit(smoothing_level=1.6,optimized=False)
         result = model.fittedvalues        
         predict = model.predict(0,len(test)-1)
         año2011['Predictions'] = predict
         self.results = año2011
+        self.results = self.results.rename_axis('Month').reset_index()
+        self.results.drop(['Sales'], axis = 1)
 
         result.plot(legend=True,label="Fitted")
         predict.plot(legend=True,label="Predictions")

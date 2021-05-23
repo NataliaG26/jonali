@@ -8,11 +8,14 @@ import datetime                    #Importamos datetime para manejar fechas
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans
 
-def KMEANS(Self):
+class Kmeans:
     
     results = pd.DataFrame()
+
+    def __init__(self):
+        return
     
-    def predict(data_customersnotnull):
+    def predict(self, data_customersnotnull):
         #Total de compra
         data_customersnotnull['TotalPrice'] = data_customersnotnull['UnitPrice']*data_customersnotnull['Quantity']
 

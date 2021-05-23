@@ -11,11 +11,14 @@ from statsmodels.tsa.holtwinters import ExponentialSmoothing
 #Métricas
 from math import sqrt #Permite usar la función de raíz
 
-def HWES(self):
+class Hwes:
 
     results = pd.DataFrame()
 
-    def predict(dataMonths):
+    def __init__(self):
+        return
+
+    def predict(self, dataMonths):
         # Separar los datos por año
         df_2010 = dataMonths[dataMonths.Year.isin([2010])]
         df_2011 = dataMonths[dataMonths.Year.isin([2011])]
@@ -40,16 +43,16 @@ def HWES(self):
         ventas['Month'] = pd.to_datetime(ventas["Month"])
         ventas.set_index(['Month'],inplace=True)
         ventas.index = pd.DatetimeIndex(ventas.index).to_period('M')
-        ventas.columns = ['Sales']
+        ventas = ventas.rename({'Quantity': 'Sales'}, axis="columns")
 
          # Split data into train / test sets
         train = ventas.iloc[:len(ventas)-12] 
         test = ventas.iloc[len(ventas)-12:] # set one year(12 months) for testing
-        año2011 = test.to_frame().copy()
+        año2011 = test.copy()
 
-        model = Holt(test, exponential=True, initialization_method="estimated").fit(smoothing_level=0.5,smoothing_trend=0,optimized=False)
+        model = Holt(test['Sales'], exponential=True, initialization_method="estimated").fit(smoothing_level=0.5,smoothing_trend=0,optimized=False)
         predict = model.predict('2011-01','2011-12')
-        año2011['Predictions'] = predict[0].values
+        año2011['Predictions'] = predict
         self.results = año2011
         
         test.plot(legend=True)

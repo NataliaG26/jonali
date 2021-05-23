@@ -14,11 +14,14 @@ warnings.filterwarnings("ignore")
 from math import sqrt #Permite usar la función de raíz
 
 
-def SARIMAX(self):
+class SARIMAX_predict:
 
     results = pd.DataFrame()
 
-    def Predict(dataMonths):
+    def __init__(self):
+        return
+
+    def predict(self, dataMonths):
         # Separar los datos por año
         df_2010 = dataMonths[dataMonths.Year.isin([2010])]
         df_2011 = dataMonths[dataMonths.Year.isin([2011])]
@@ -43,7 +46,8 @@ def SARIMAX(self):
         ventas['Month'] = pd.to_datetime(ventas["Month"])
         ventas.set_index(['Month'],inplace=True)
         ventas.index = pd.DatetimeIndex(ventas.index).to_period('M')
-        ventas.columns = ['Sales']
+        #ventas.columns = ['Sales']
+        ventas = ventas.rename({'Quantity': 'Sales'}, axis="columns")
 
         # Split data into train / test sets
         train = ventas.iloc[:len(ventas)-12] 
@@ -62,7 +66,9 @@ def SARIMAX(self):
         
         self.results = predictions.to_frame().copy()
         testcopy = test.copy()
-        testcopy['Predictions'] = results['Predictions']
+        testcopy['Predictions'] = self.results['Predictions']
+        self.results = testcopy.copy()
+        self.results = self.results.rename_axis('Month').reset_index()
 
         # plot predictions and actual values
         predictions.plot(legend = True)
