@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {{ super() }}
+    | Productos
+{% endblock %}
+
+{% block content %}
+
+<h1 class="mt-4">Productos más vendidos por pais</h1>
+    <div class="row">
+        <form class="form-inline" action="/productos_top_paises" method="POST">
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Indique la cantidad de productos</label>
+                <div class="form-group mx-sm-3 mb-2">
+                    <input type="products_num" class="form-control" id="products_num" name='products_num' placeholder="numero">
+                </div>
+                <div>
+                    <select class="form-control" id="cSelect" name="cSelect">
+                        {% for country in countries %}
+                            <option>{{country}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary mb-2">Ver</button>
+            </div>
+
+          </form>
+    </div>
+    
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-area mr-1"></i>
+                    Productos más vendidos
+                </div>
+                {% if most_selled_products_per_country  %}
+                <div class="card-body"><img src="{{ most_selled_products_per_country }}" alt="distri" class="img_500"></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table mr-1"></i>
+            Lista de los productos más vendidos {{cName}}
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                {% if row_data %}
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Ventas</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Ventas</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        </tr>
+                            {% for row in row_data %}
+                            <tr>
+                                {% for col, row_ in zip(column_names, row) %}
+                                {% if col == link_column %}
+                                <td>
+                                {{ row_ }}
+                        
+                                </td>
+                                {% else %}
+                                <td>{{row_}}</td>
+                                {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

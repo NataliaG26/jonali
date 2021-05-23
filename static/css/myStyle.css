@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+.img_900{
+    max-width: 900px;
+}
+
+.img_700{
+    max-width: 700px;
+}
+
+.img_500{
+    max-width: 500px;
+}
