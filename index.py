@@ -1,6 +1,6 @@
 from flask import Flask, render_template, abort, request
 from flask.wrappers import Request
-from model import ARIMA, report, data
+from model import SARIMAX,SES,HWES,KMEANS,MINIBKMEANS, report, data
 import numpy as np
 import pandas as pd
 
@@ -8,12 +8,9 @@ app = Flask(__name__)
 
 dataa = data.Data()
 
-
 @app.route('/')
 def home():
     return render_template('layout.html')
-
-##app.add_url_rule('/',view_func=ARIMA.predecir);
 
 @app.route('/horario_compras')
 def horarioCompras():
@@ -88,11 +85,35 @@ def productos_top_paises():
     
     return render_template('productos_top_paises.html', **context)
 
+@app.route('/Prediction_SARIMAX')
+def SARIMAX():
+    #plot = SARIMAX.predict(dataa.dataMonths)
+    #r = SARIMAX.results
+    #context = {
+     #   'Model' : plot,
+      #  'column_names' : r.columns.values,
+       # 'row_data': list(r.values.tolist()),
+        #'link_column' : "Month",
+        #'zip' : zip,
+    #}
+    #return render_template('SARIMAX.html',**context)
+    return render_template('SARIMAX.html')
+    
+@app.route('/Prediction_SES')
+def SES():
+    return render_template('SES.html')
 
-@app.route('/test')
-def test():
-    return render_template('login.html')
+@app.route('/Prediction_HWES')
+def HWES():
+    return render_template('HWES.html')
 
+@app.route('/Clustering_KMEANS')
+def KMEANS():
+    return render_template('KMEANS.html')
+
+@app.route('/Clusterin_MINIBKMEANS')
+def HWES():
+    return render_template('MINIBKMEANS.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
